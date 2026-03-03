@@ -58,7 +58,13 @@ if uploaded_file is not None:
                 ret, frame = cap.read()
                 if not ret:
                     break
+                frame = cv2.resize(frame, (640, 360))
 
+                current_frame += 1
+
+                # 🔥 Skip frames
+                if current_frame % 3 != 0:
+                    continue
                 start_time = time.time()
 
                 result, lane_positions = process_frame(frame)
@@ -131,6 +137,7 @@ if uploaded_file is not None:
 
                 current_frame += 1
                 progress.progress(min(current_frame / total_frames, 1.0))
+                time.sleep(0.01)
 
             cap.release()
             st.success("✅ Processing Complete!")
